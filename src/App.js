@@ -10,17 +10,25 @@ class App extends React.Component {
     ],
     otherStates: [
       { age: 29 }
-    ]
+    ],
+    showPersons: false
   }
 
-  switchNameHandler = (newName) => {
-    console.log('successfull Çağla:D:D:D');
+  // switchNameHandler = (newName) => {
+  //   console.log('successfull Çağla:D:D:D');
+  //   this.setState({
+  //     persons: [
+  //       { name: newName, age: 23 },
+  //       { name: 'Mustafa', age: 25 }
+  //     ]
+  //   })
+  // }
+
+  togglePersonsHandler = () => {
+    const doesShow = this.state.showPersons;
     this.setState({
-      persons: [
-        { name: newName, age: 23 },
-        { name: 'Mustafa', age: 25 }
-      ]
-    })
+      showPersons: !doesShow
+    });
   }
 
   nameChangedHandler = (event) => {
@@ -32,20 +40,37 @@ class App extends React.Component {
     })
   }
 
+  deletePersonHandler = (personIndex) => {
+    const persons = this.state.persons;
+    persons.splice(personIndex, 1);
+    this.setState({
+      persons: persons
+    });
+  }
+
+
   render() {
-    // const {name, age} = this.state;
-    // console.log(name);
-    // console.log(age);
+    
+    let persons = null;
+
+    if (this.state.showPersons) {
+      persons = (
+        <div>
+          {this.state.persons.map((person, index) => {
+            return <Person
+              click={this.deletePersonHandler}
+              name={person.name}
+              age={person.age} />
+          })}
+        </div>
+      );
+    }
+
     return (
       <div className="App">
         <h1>Çağla'nın sitesi yeye jsx yaziiyitititti.</h1>
-        <button onClick={this.switchNameHandler.bind(this, 'Değiştirdim güzelim')}>TIKLA BEBEYİM BURAYA</button>
-        <Person
-          name={this.state.persons[0].name}
-          age={this.state.persons[0].age}>Araya bir children sıkıştırdım kanki nne diyosuunnn xdxd</Person>
-        <Person
-          name={this.state.persons[1].name}
-          change={this.nameChangedHandler}></Person>
+        <button onClick={this.togglePersonsHandler}>TIKLA BEBEYİM BURAYA</button>
+        {persons}
       </div>
     );
 
