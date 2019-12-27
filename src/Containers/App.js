@@ -1,18 +1,37 @@
 import React from 'react';
 import './App.css';
-import Person from '../Components/Persons/Person/Person'
 // import Radium from 'radium';
+import Persons from '../Components/Persons/Persons';
 
 class App extends React.Component {
-  state = {
-    persons: [
-      { id: 'asdaafsd', name: 'Çağla', age: 23 },
-      { id: 'dsfdsfg', name: 'Mustafa', age: 25 }
-    ],
-    otherStates: [
-      { age: 29 }
-    ],
-    showPersons: false
+  constructor(props) {
+    super(props);
+    console.log('[App.js] constructor');
+    this.state =
+    {
+      persons: [
+        { id: 'asdaafsd', name: 'Çağla', age: 23 },
+        { id: 'dsfdsfg', name: 'Mustafa', age: 25 }
+      ],
+      otherStates: [
+        { age: 29 }
+      ],
+      showPersons: false
+    }
+  }
+
+  static getDeriveStateFromProps(props, state) {
+    console.log('[App.js] getDeriveStateFromProps', props);
+    return state;
+  }
+
+  componentWillMount() {
+    console.log('Component Will Mount');
+  }
+
+  componentDidMount() {
+    console.log('Componen Did Mount :D:DD:D:');
+
   }
 
   // switchNameHandler = (newName) => {
@@ -68,6 +87,7 @@ class App extends React.Component {
 
 
   render() {
+    console.log('[App.js] render() is working.');
 
     let persons = null;
     const classes = [];
@@ -80,26 +100,17 @@ class App extends React.Component {
     if (this.state.showPersons) {
       persons = (
         <div >
-          {
-            this.state.persons.map((person, index) => {
-              return <Person
-                click={
-                  () => this.deletePersonHandler(index)}
-                name={person.name}
-                age={person.age}
-                key={person.id}
-                changed={
-                  (event) => this.nameChangedHandler(event, person.id)}
-              />
-            })
-          }
+          <Persons
+            persons={this.state.persons}
+            clicked={this.deletePersonHandler}
+            changed={this.nameChangedHandler} />
         </div>
       );
     }
 
     return (
       <div className="App" >
-        <h1 className={classes.join(' ')} > Çağla 'nın sitesi yeye jsx yaziiyitititti.</h1>
+        <h1 className={classes.join(' ')} > Çağla 'nın sitesi yeye jsx yaziiyitititti.{this.props.appTitle}</h1>
         <button onClick={this.togglePersonsHandler} > TIKLA BEBEYİM BURAYA </button>
         {persons}
       </div>
